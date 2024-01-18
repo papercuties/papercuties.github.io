@@ -57,13 +57,11 @@
             var body = document.body;
             body.classList.toggle('dark-mode');
             
-            // store color mode
             var selectedMode = body.classList.contains('dark-mode') ? 'dark' : 'light';
             localStorage.setItem('selectedMode', selectedMode);
         }
 
         document.addEventListener("DOMContentLoaded", function() {
-            // int mode based on local storage
             var selectedMode = localStorage.getItem('selectedMode');
             if (selectedMode === 'dark') {
                 document.body.classList.add('dark-mode');
@@ -72,15 +70,18 @@
 
         function setRandomPosition(element) {
             var scrollbarWidth = getScrollbarWidth();
-            var left = Math.floor(Math.random() * (window.innerWidth - element.clientWidth - scrollbarWidth.vertical));
-            var top = Math.floor(Math.random() * (window.innerHeight - element.clientHeight - scrollbarWidth.horizontal));
+            var left, top;
+
+            do {
+                left = Math.floor(Math.random() * (window.innerWidth - element.clientWidth - scrollbarWidth.vertical));
+                top = Math.floor(Math.random() * (window.innerHeight - element.clientHeight - scrollbarWidth.horizontal));
+            } while (checkOverlap(left, top, element));
 
             element.style.left = left + 'px';
             element.style.top = top + 'px';
         }
 
         function getScrollbarWidth() {
-            // Create a div with a scrollbar to measure its width
             var scrollDiv = document.createElement('div');
             scrollDiv.style.width = '100px';
             scrollDiv.style.height = '100px';
@@ -97,6 +98,26 @@
             document.body.removeChild(scrollDiv);
 
             return scrollbarWidth;
+        }
+
+        function checkOverlap(left, top, element) {
+            var overlap = false;
+            elements.forEach(function(otherElement) {
+                if (otherElement !== element) {
+                    var rect1 = {
+                        left: left,
+                        top: top,
+                        right: left + element.clientWidth,
+                        bottom: top + element.clientHeight
+                    };
+                    var rect2 = otherElement.getBoundingClientRect();
+                    overlap = !(rect1.right < rect2.left || 
+                                rect1.left > rect2.right || 
+                                rect1.bottom < rect2.top || 
+                                rect1.top > rect2.bottom);
+                }
+            });
+            return overlap;
         }
 
         var elements = document.querySelectorAll('.random-position');
