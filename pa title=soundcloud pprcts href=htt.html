@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            transition: background-color 0.0s;
+            color: #000;
+            margin: 0;
+            position: relative;
+        }
+
+        .dark-mode {
+            background-color: #000;
+            color: #fff;
+        }
+
+        .mode-toggle {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            width: 25px;
+            height: 25px;
+            cursor: pointer;
+        }
+
+        .mode-toggle.square {
+            background-color: #000;
+        }
+
+        .dark-mode .mode-toggle.square {
+            background-color: #fff;
+        }
+
+        .random-position {
+            position: absolute;
+            left: 0;
+            top: 0;
+        }
+    </style>
+</head>
+<body>
+
+    <p class="random-position" style="text-align: center;">papercuties</p>
+    <p class="random-position" style="text-align: center;"><a title="soundcloud" href="https://soundcloud.com/papercuties">soundcloud</a></p>
+    <p class="random-position" style="text-align: center;"><a title="instagram" href="https://instagram.com/serverknight">instagram</a></p>
+    <p class="random-position" style="text-align: center;"><a title="twitter" href="https://twitter.com/lilpapercuties">twitter</a></p>
+    <p class="random-position" style="text-align: center;"><a title="tiktok" href="sdfsdfsdf">tiktok</a></p>
+    <p class="random-position" style="text-align: center;"><a title="spotify" href="https://open.spotify.com/intl-it/artist/4cG8aNjgpnv8JmXBNnRdhW?si=_ZiJKLS-RySHc6AOuweRrw&amp;nd=1&amp;dlsi=8a3e90649d774772">spotify</a></p>
+    <p class="random-position" style="text-align: center;"><a title="devices" href="shdbjsdf">devices</a></p>
+
+    <div class="mode-toggle square random-position" onclick="toggleDarkMode()"></div>
+
+    <script>
+        function toggleDarkMode() {
+            var body = document.body;
+            body.classList.toggle('dark-mode');
+            
+            // store color mode
+            var selectedMode = body.classList.contains('dark-mode') ? 'dark' : 'light';
+            localStorage.setItem('selectedMode', selectedMode);
+        }
+
+        document.addEventListener("DOMContentLoaded", function() {
+            // int mode based on local storage
+            var selectedMode = localStorage.getItem('selectedMode');
+            if (selectedMode === 'dark') {
+                document.body.classList.add('dark-mode');
+            }
+        });
+
+        // random pos of elements w "random-position"
+        var elements = document.querySelectorAll('.random-position');
+        elements.forEach(function(element) {
+            element.style.left = Math.floor(Math.random() * window.innerWidth) + 'px';
+            element.style.top = Math.floor(Math.random() * window.innerHeight) + 'px';
+        });
+    </script>
+
+</body>
+</html>
+
