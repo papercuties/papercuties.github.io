@@ -9,6 +9,7 @@
             color: #000;
             margin: 0;
             position: relative;
+            overflow: hidden; /* Hide both horizontal and vertical scrollbars */
         }
 
         .dark-mode {
@@ -56,12 +57,13 @@
             var body = document.body;
             body.classList.toggle('dark-mode');
             
+            // store color mode
             var selectedMode = body.classList.contains('dark-mode') ? 'dark' : 'light';
             localStorage.setItem('selectedMode', selectedMode);
         }
 
         document.addEventListener("DOMContentLoaded", function() {
-            
+            // int mode based on local storage
             var selectedMode = localStorage.getItem('selectedMode');
             if (selectedMode === 'dark') {
                 document.body.classList.add('dark-mode');
@@ -69,8 +71,32 @@
         });
 
         function setRandomPosition(element) {
-            element.style.left = Math.floor(Math.random() * (window.innerWidth - element.clientWidth)) + 'px';
-            element.style.top = Math.floor(Math.random() * (window.innerHeight - element.clientHeight)) + 'px';
+            var scrollbarWidth = getScrollbarWidth();
+            var left = Math.floor(Math.random() * (window.innerWidth - element.clientWidth - scrollbarWidth.vertical));
+            var top = Math.floor(Math.random() * (window.innerHeight - element.clientHeight - scrollbarWidth.horizontal));
+
+            element.style.left = left + 'px';
+            element.style.top = top + 'px';
+        }
+
+        function getScrollbarWidth() {
+            // Create a div with a scrollbar to measure its width
+            var scrollDiv = document.createElement('div');
+            scrollDiv.style.width = '100px';
+            scrollDiv.style.height = '100px';
+            scrollDiv.style.overflow = 'scroll';
+            scrollDiv.style.position = 'absolute';
+            scrollDiv.style.top = '-9999px';
+            document.body.appendChild(scrollDiv);
+            
+            var scrollbarWidth = {
+                horizontal: scrollDiv.offsetHeight - scrollDiv.clientHeight,
+                vertical: scrollDiv.offsetWidth - scrollDiv.clientWidth
+            };
+
+            document.body.removeChild(scrollDiv);
+
+            return scrollbarWidth;
         }
 
         var elements = document.querySelectorAll('.random-position');
@@ -87,5 +113,3 @@
 
 </body>
 </html>
-
-
