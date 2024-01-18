@@ -37,6 +37,7 @@
         .random-position {
             position: absolute;
             text-align: center;
+            white-space: nowrap;
         }
     </style>
 </head>
@@ -105,8 +106,8 @@
             var rect1 = {
                 left: left,
                 top: top,
-                right: left + element.clientWidth,
-                bottom: top + element.clientHeight
+                right: left + element.offsetWidth,
+                bottom: top + element.offsetHeight
             };
 
             elements.forEach(function(otherElement) {
@@ -116,9 +117,9 @@
                                 rect1.left > rect2.right || 
                                 rect1.bottom < rect2.top || 
                                 rect1.top > rect2.bottom);
+                    if (overlap) return;
                 }
             });
-
             return overlap;
         }
 
@@ -134,5 +135,7 @@
         });
     </script>
 
+</body>
+</html>
 </body>
 </html>
