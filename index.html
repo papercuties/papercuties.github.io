@@ -9,7 +9,7 @@
             color: #000;
             margin: 0;
             position: relative;
-            overflow: hidden; /* Hide both horizontal and vertical scrollbars */
+            overflow: hidden;
         }
 
         .dark-mode {
@@ -102,14 +102,15 @@
 
         function checkOverlap(left, top, element) {
             var overlap = false;
+            var rect1 = {
+                left: left,
+                top: top,
+                right: left + element.clientWidth,
+                bottom: top + element.clientHeight
+            };
+
             elements.forEach(function(otherElement) {
                 if (otherElement !== element) {
-                    var rect1 = {
-                        left: left,
-                        top: top,
-                        right: left + element.clientWidth,
-                        bottom: top + element.clientHeight
-                    };
                     var rect2 = otherElement.getBoundingClientRect();
                     overlap = !(rect1.right < rect2.left || 
                                 rect1.left > rect2.right || 
@@ -117,6 +118,7 @@
                                 rect1.top > rect2.bottom);
                 }
             });
+
             return overlap;
         }
 
