@@ -10,7 +10,7 @@
             margin: 0;
             position: relative;
             overflow: hidden;
-            font-size: 140%; /* Increased by 40% */
+            font-size: 140%;
         }
 
         .dark-mode {
@@ -44,10 +44,9 @@
         #draggableSquare {
             width: 290px;
             height: 290px;
-            background-color: #f00; /* Bright red color for visibility */
+            background-color: #f00;
             position: absolute;
             cursor: pointer;
-            /* Removed border and box-shadow */
             border: none;
             box-shadow: none;
         }
@@ -82,19 +81,17 @@
                 document.body.classList.add('dark-mode');
             }
 
-            // Randomly position all elements, including the draggable square
             var elements = document.querySelectorAll('.random-position');
             elements.forEach(function(element) {
                 setRandomPosition(element);
             });
-
-            // Position the draggable square
+           
             setRandomPosition(document.getElementById('draggableSquare'));
         });
 
         function setRandomPosition(element) {
             var scrollbarWidth = getScrollbarWidth();
-            var buffer = 10; // 10-pixel buffer
+            var buffer = 10; 
 
             do {
                 var left = Math.floor(Math.random() * (window.innerWidth - element.clientWidth - scrollbarWidth.vertical - buffer * 2)) + buffer;
@@ -154,37 +151,31 @@
                 setRandomPosition(element);
             });
 
-            // Re-position the draggable square
             setRandomPosition(document.getElementById('draggableSquare'));
         });
 
-        // Draggable Square Script
         const draggableSquare = document.getElementById('draggableSquare');
         let isDragging = false;
         let startX, startY;
         let offsetX, offsetY;
 
         draggableSquare.addEventListener('mousedown', (e) => {
-            // Calculate initial offsets relative to the square's position
             const rect = draggableSquare.getBoundingClientRect();
             offsetX = e.clientX - rect.left;
             offsetY = e.clientY - rect.top;
             startX = e.clientX;
             startY = e.clientY;
             isDragging = false;
-            e.preventDefault(); // Prevent text selection while dragging
+            e.preventDefault(); 
         });
 
         document.addEventListener('mousemove', (e) => {
             if (offsetX !== undefined && offsetY !== undefined) {
-                // Update position only if dragging
                 if (Math.abs(e.clientX - startX) > 5 || Math.abs(e.clientY - startY) > 5) {
                     isDragging = true;
-                    // Calculate new position
                     const newLeft = e.clientX - offsetX;
                     const newTop = e.clientY - offsetY;
                     
-                    // Update square position
                     draggableSquare.style.left = `${newLeft}px`;
                     draggableSquare.style.top = `${newTop}px`;
                 }
@@ -192,11 +183,9 @@
         });
 
         document.addEventListener('mouseup', (e) => {
-            // Only redirect if it was a click and not a drag
             if (!isDragging && e.clientX === startX && e.clientY === startY) {
                 window.location.href = 'https://soundcloud.com/papercuties/soft';
             }
-            // Reset states
             offsetX = undefined;
             offsetY = undefined;
             isDragging = false;
