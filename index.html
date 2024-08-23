@@ -40,6 +40,17 @@
             text-align: center;
             white-space: nowrap;
         }
+
+        #draggableSquare {
+            width: 290px;
+            height: 290px;
+            background-color: #f00; /* Bright red color for visibility */
+            position: absolute;
+            cursor: pointer;
+            /* Removed border and box-shadow */
+            border: none;
+            box-shadow: none;
+        }
     </style>
 </head>
 <body>
@@ -52,6 +63,9 @@
     <p class="random-position"><a title="tiktok" href="https://www.tiktok.com/@user7080000441612">tiktok</a></p>
 
     <div class="mode-toggle square random-position" onclick="toggleDarkMode()"></div>
+
+    <!-- Draggable Square -->
+    <div id="draggableSquare"></div>
 
     <script>
         function toggleDarkMode() {
@@ -67,6 +81,15 @@
             if (selectedMode === 'dark') {
                 document.body.classList.add('dark-mode');
             }
+
+            // Randomly position all elements, including the draggable square
+            var elements = document.querySelectorAll('.random-position');
+            elements.forEach(function(element) {
+                setRandomPosition(element);
+            });
+
+            // Position the draggable square
+            setRandomPosition(document.getElementById('draggableSquare'));
         });
 
         function setRandomPosition(element) {
@@ -125,14 +148,58 @@
         }
 
         var elements = document.querySelectorAll('.random-position');
-        elements.forEach(function(element) {
-            setRandomPosition(element);
-        });
 
         window.addEventListener('resize', function() {
             elements.forEach(function(element) {
                 setRandomPosition(element);
             });
+
+            // Re-position the draggable square
+            setRandomPosition(document.getElementById('draggableSquare'));
+        });
+
+        // Draggable Square Script
+        const draggableSquare = document.getElementById('draggableSquare');
+        let isDragging = false;
+        let startX, startY;
+        let offsetX, offsetY;
+
+        draggableSquare.addEventListener('mousedown', (e) => {
+            // Calculate initial offsets relative to the square's position
+            const rect = draggableSquare.getBoundingClientRect();
+            offsetX = e.clientX - rect.left;
+            offsetY = e.clientY - rect.top;
+            startX = e.clientX;
+            startY = e.clientY;
+            isDragging = false;
+            e.preventDefault(); // Prevent text selection while dragging
+        });
+
+        document.addEventListener('mousemove', (e) => {
+            if (offsetX !== undefined && offsetY !== undefined) {
+                // Update position only if dragging
+                if (Math.abs(e.clientX - startX) > 5 || Math.abs(e.clientY - startY) > 5) {
+                    isDragging = true;
+                    // Calculate new position
+                    const newLeft = e.clientX - offsetX;
+                    const newTop = e.clientY - offsetY;
+                    
+                    // Update square position
+                    draggableSquare.style.left = `${newLeft}px`;
+                    draggableSquare.style.top = `${newTop}px`;
+                }
+            }
+        });
+
+        document.addEventListener('mouseup', (e) => {
+            // Only redirect if it was a click and not a drag
+            if (!isDragging && e.clientX === startX && e.clientY === startY) {
+                window.location.href = 'https://soundcloud.com/papercuties/soft';
+            }
+            // Reset states
+            offsetX = undefined;
+            offsetY = undefined;
+            isDragging = false;
         });
     </script>
 
