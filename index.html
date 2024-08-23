@@ -44,8 +44,9 @@
         #draggableSquare {
             width: 290px;
             height: 290px;
-            background-color: #f00;
-            background-image: "soft 1.png"
+            background-image: url('soft%201.png');
+            background-size: cover;
+            background-position: center;
             position: absolute;
             cursor: pointer;
             border: none;
@@ -70,7 +71,6 @@
         function toggleDarkMode() {
             var body = document.body;
             body.classList.toggle('dark-mode');
-            
             var selectedMode = body.classList.contains('dark-mode') ? 'dark' : 'light';
             localStorage.setItem('selectedMode', selectedMode);
         }
@@ -85,13 +85,13 @@
             elements.forEach(function(element) {
                 setRandomPosition(element);
             });
-           
+
             setRandomPosition(document.getElementById('draggableSquare'));
         });
 
         function setRandomPosition(element) {
             var scrollbarWidth = getScrollbarWidth();
-            var buffer = 10; 
+            var buffer = 10;
 
             do {
                 var left = Math.floor(Math.random() * (window.innerWidth - element.clientWidth - scrollbarWidth.vertical - buffer * 2)) + buffer;
@@ -166,7 +166,7 @@
             startX = e.clientX;
             startY = e.clientY;
             isDragging = false;
-            e.preventDefault(); 
+            e.preventDefault();
         });
 
         document.addEventListener('mousemove', (e) => {
@@ -175,7 +175,6 @@
                     isDragging = true;
                     const newLeft = e.clientX - offsetX;
                     const newTop = e.clientY - offsetY;
-                    
                     draggableSquare.style.left = `${newLeft}px`;
                     draggableSquare.style.top = `${newTop}px`;
                 }
