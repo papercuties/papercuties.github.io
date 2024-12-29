@@ -1,209 +1,64 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <style>
-        body {
-            transition: background-color 0.0s;
-            color: #000;
-            margin: 0;
-            position: relative;
-            overflow: hidden;
-            font-size: 140%;
-        }
+<style>
+    body {
+        transition: background-color 0.0s;
+        color: #000;
+        margin: 0;
+        position: relative;
+        overflow: hidden;
+        font-size: 140%;
+    }
 
-        .dark-mode {
-            background-color: #000;
-            color: #fff;
-        }
+    .dark-mode {
+        background-color: #000;
+        color: #fff;
+    }
 
-        .mode-toggle {
-            position: fixed;
-            top: 10px;
-            right: 10px;
-            width: 25px;
-            height: 25px;
-            cursor: pointer;
-        }
+    .mode-toggle {
+        position: fixed;
+        top: 10px;
+        right: 10px;
+        width: 25px;
+        height: 25px;
+        cursor: pointer;
+    }
 
-        .mode-toggle.square {
-            background-color: #000;
-        }
+    .mode-toggle.square {
+        background-color: #000;
+    }
 
-        .dark-mode .mode-toggle.square {
-            background-color: #fff;
-        }
+    .dark-mode .mode-toggle.square {
+        background-color: #fff;
+    }
 
-        .random-position {
-            position: absolute;
-            text-align: center;
-            white-space: nowrap;
-        }
+    .random-position {
+        position: absolute;
+        text-align: center;
+        white-space: nowrap;
+    }
 
+    #draggableSquare, #draggableSquare2 {
+        width: 290px;
+        height: 290px;
+        background-size: cover;
+        background-position: center;
+        position: absolute;
+        cursor: pointer;
+        border: none;
+        box-shadow: none;
+    }
+
+    #draggableSquare {
+        background-image: url('soft%201.png');
+    }
+
+    #draggableSquare2 {
+        background-image: url('calipso%203000.png');
+    }
+
+    @media (max-width: 768px) {
         #draggableSquare, #draggableSquare2 {
-            width: 290px;
-            height: 290px;
-            background-size: cover;
-            background-position: center;
-            position: absolute;
-            cursor: pointer;
-            border: none;
-            box-shadow: none;
+            display: none;
         }
+    }
+</style>
 
-        #draggableSquare {
-            background-image: url('soft%201.png');
-        }
-
-        #draggableSquare2 {
-            background-image: url('calipso%203000.png');
-        }
-    </style>
-</head>
-<body>
-
-    <p class="random-position">papercuties</p>
-    <p class="random-position"><a title="soundcloud" href="https://soundcloud.com/papercuties">soundcloud</a></p>
-    <p class="random-position"><a title="instagram" href="https://instagram.com/serverknight">instagram</a></p>
-    <p class="random-position"><a title="bandcamp" href="https://papercuties.bandcamp.com">bandcamp</a></p>
-    <p class="random-position"><a title="spotify" href="https://open.spotify.com/intl-it/artist/4cG8aNjgpnv8JmXBNnRdhW?si=_ZiJKLS-RySHc6AOuweRrw&amp;nd=1&amp;dlsi=8a3e90649d774772">spotify</a></p>
-
-    <div class="mode-toggle square random-position" onclick="toggleDarkMode()"></div>
-
-    <div id="draggableSquare"></div>
-    <div id="draggableSquare2"></div>
-
-    <script>
-        function toggleDarkMode() {
-            var body = document.body;
-            body.classList.toggle('dark-mode');
-            var selectedMode = body.classList.contains('dark-mode') ? 'dark' : 'light';
-            localStorage.setItem('selectedMode', selectedMode);
-        }
-
-        document.addEventListener("DOMContentLoaded", function() {
-            var selectedMode = localStorage.getItem('selectedMode');
-            if (selectedMode === 'dark') {
-                document.body.classList.add('dark-mode');
-            }
-
-            var elements = document.querySelectorAll('.random-position');
-            elements.forEach(function(element) {
-                setRandomPosition(element);
-            });
-
-            setRandomPosition(document.getElementById('draggableSquare'));
-            setRandomPosition(document.getElementById('draggableSquare2'));
-        });
-
-        function setRandomPosition(element) {
-            var scrollbarWidth = getScrollbarWidth();
-            var buffer = 10;
-
-            do {
-                var left = Math.floor(Math.random() * (window.innerWidth - element.clientWidth - scrollbarWidth.vertical - buffer * 2)) + buffer;
-                var top = Math.floor(Math.random() * (window.innerHeight - element.clientHeight - scrollbarWidth.horizontal - buffer * 2)) + buffer;
-
-            } while (checkOverlap(left, top, element));
-
-            element.style.left = left + 'px';
-            element.style.top = top + 'px';
-        }
-
-        function getScrollbarWidth() {
-            var scrollDiv = document.createElement('div');
-            scrollDiv.style.width = '100px';
-            scrollDiv.style.height = '100px';
-            scrollDiv.style.overflow = 'scroll';
-            scrollDiv.style.position = 'absolute';
-            scrollDiv.style.top = '-9999px';
-            document.body.appendChild(scrollDiv);
-            
-            var scrollbarWidth = {
-                horizontal: scrollDiv.offsetHeight - scrollDiv.clientHeight,
-                vertical: scrollDiv.offsetWidth - scrollDiv.clientWidth
-            };
-
-            document.body.removeChild(scrollDiv);
-
-            return scrollbarWidth;
-        }
-
-        function checkOverlap(left, top, element) {
-            var overlap = false;
-            var rect1 = {
-                left: left,
-                top: top,
-                right: left + element.offsetWidth,
-                bottom: top + element.offsetHeight
-            };
-
-            elements.forEach(function(otherElement) {
-                if (otherElement !== element) {
-                    var rect2 = otherElement.getBoundingClientRect();
-                    overlap = !(rect1.right < rect2.left || 
-                                rect1.left > rect2.right || 
-                                rect1.bottom < rect2.top || 
-                                rect1.top > rect2.bottom);
-                    if (overlap) return;
-                }
-            });
-            return overlap;
-        }
-
-        var elements = document.querySelectorAll('.random-position');
-
-        window.addEventListener('resize', function() {
-            elements.forEach(function(element) {
-                setRandomPosition(element);
-            });
-
-            setRandomPosition(document.getElementById('draggableSquare'));
-            setRandomPosition(document.getElementById('draggableSquare2'));
-        });
-
-        function enableDrag(elementId, redirectUrl) {
-            const draggableElement = document.getElementById(elementId);
-            let isDragging = false;
-            let startX, startY;
-            let offsetX, offsetY;
-
-            draggableElement.addEventListener('mousedown', (e) => {
-                const rect = draggableElement.getBoundingClientRect();
-                offsetX = e.clientX - rect.left;
-                offsetY = e.clientY - rect.top;
-                startX = e.clientX;
-                startY = e.clientY;
-                isDragging = false;
-                e.preventDefault();
-            });
-
-            document.addEventListener('mousemove', (e) => {
-                if (offsetX !== undefined && offsetY !== undefined) {
-                    if (Math.abs(e.clientX - startX) > 5 || Math.abs(e.clientY - startY) > 5) {
-                        isDragging = true;
-                        const newLeft = e.clientX - offsetX;
-                        const newTop = e.clientY - offsetY;
-                        draggableElement.style.left = `${newLeft}px`;
-                        draggableElement.style.top = `${newTop}px`;
-                    }
-                }
-            });
-
-            document.addEventListener('mouseup', (e) => {
-                if (!isDragging && e.clientX === startX && e.clientY === startY) {
-                    window.location.href = redirectUrl;
-                }
-                offsetX = undefined;
-                offsetY = undefined;
-                isDragging = false;
-            });
-        }
-
-        enableDrag('draggableSquare', 'https://papercuties.art/soft');
-        enableDrag('draggableSquare2', 'https://papercuties.art/calipso');
-    </script>
-
-</body>
-</html>
