@@ -89,7 +89,7 @@
             }
 
             var elements = document.querySelectorAll('.random-position');
-            elements.forEach(function(element) {
+            elements.forEach(function (element) {
                 setRandomPosition(element);
             });
 
@@ -104,7 +104,6 @@
             do {
                 var left = Math.floor(Math.random() * (window.innerWidth - element.clientWidth - scrollbarWidth.vertical - buffer * 2)) + buffer;
                 var top = Math.floor(Math.random() * (window.innerHeight - element.clientHeight - scrollbarWidth.horizontal - buffer * 2)) + buffer;
-
             } while (checkOverlap(left, top, element));
 
             element.style.left = left + 'px';
@@ -119,7 +118,7 @@
             scrollDiv.style.position = 'absolute';
             scrollDiv.style.top = '-9999px';
             document.body.appendChild(scrollDiv);
-            
+
             var scrollbarWidth = {
                 horizontal: scrollDiv.offsetHeight - scrollDiv.clientHeight,
                 vertical: scrollDiv.offsetWidth - scrollDiv.clientWidth
@@ -139,7 +138,7 @@
                 bottom: top + element.offsetHeight
             };
 
-            elements.forEach(function(otherElement) {
+            elements.forEach(function (otherElement) {
                 if (otherElement !== element) {
                     var rect2 = otherElement.getBoundingClientRect();
                     overlap = !(rect1.right < rect2.left || 
@@ -154,8 +153,8 @@
 
         var elements = document.querySelectorAll('.random-position');
 
-        window.addEventListener('resize', function() {
-            elements.forEach(function(element) {
+        window.addEventListener('resize', function () {
+            elements.forEach(function (element) {
                 setRandomPosition(element);
             });
 
@@ -185,8 +184,8 @@
                         isDragging = true;
                         const newLeft = e.clientX - offsetX;
                         const newTop = e.clientY - offsetY;
-                        draggableElement.style.left = ${newLeft}px;
-                        draggableElement.style.top = ${newTop}px;
+                        draggableElement.style.left = `${newLeft}px`;
+                        draggableElement.style.top = `${newTop}px`;
                     }
                 }
             });
