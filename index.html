@@ -41,7 +41,7 @@
             white-space: nowrap;
         }
 
-        #draggableSquare, #draggableSquare2 {
+        #draggableSquare, #draggableSquare2, #draggableSquare3{
             width: 290px;
             height: 290px;
             background-size: cover;
@@ -59,6 +59,11 @@
         #draggableSquare2 {
             background-image: url('calipso%203000.png');
         }
+
+        #draggableSquare3 {
+            background-image: url('mw.png');
+        }
+        
     </style>
 </head>
 <body>
@@ -73,6 +78,8 @@
 
     <div id="draggableSquare"></div>
     <div id="draggableSquare2"></div>
+    <div id="draggableSquare3"></div>
+
 
     <script>
         function toggleDarkMode() {
@@ -160,6 +167,7 @@
 
             setRandomPosition(document.getElementById('draggableSquare'));
             setRandomPosition(document.getElementById('draggableSquare2'));
+            setRandomPosition(document.getElementById('draggableSquare3'));
         });
 
         function enableDrag(elementId, redirectUrl) {
@@ -202,6 +210,7 @@
 
         enableDrag('draggableSquare', 'https://papercuties.art/soft');
         enableDrag('draggableSquare2', 'https://papercuties.art/calipso');
+        enableDrag('draggableSquare3', 'https://papercuties.art/mostwanted');
     </script>
 
 </body>
